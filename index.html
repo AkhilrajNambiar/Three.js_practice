@@ -53,17 +53,28 @@
         const boxDepth = 1;
         const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
         
-        const material = new THREE.MeshPhongMaterial({color:0x44aa88});
+        function makeCubes(geometry, color, x){
+          const material = new THREE.MeshPhongMaterial({color});
+          const cube = new THREE.Mesh(geometry, material);
+          scene.add(cube);
+          cube.position.x = x;
+          return cube;
+        }
+        const cubes=[
+          makeCubes(geometry, 0x0000ff, 0),
+          makeCubes(geometry, 0x00ff00, -2),
+          makeCubes(geometry, 0xff0000, 2)
+        ];
 
-        const cube = new THREE.Mesh(geometry, material);
-
-        scene.add(cube);
         function render_rotate(time){
           time *= 0.001;
 
-          cube.rotation.x = time;
-          cube.rotation.y = time;
-
+          cubes.forEach((cube, change)=>{
+            const speed = 1 + change*(0.1);
+            const rot = time * speed;
+            cube.rotation.x = rot;
+            cube.rotation.y = rot;
+          });
           renderer.render(scene, camera);
           requestAnimationFrame(render_rotate);
         }
