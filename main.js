@@ -38,8 +38,9 @@ function main(){
         ];
 
         function resizeRendererToDisplaySize(renderer){
-          const height = canvas.clientHeight;
-          const width = canvas.clientWidth;
+          const pixelRatio = window.devicePixelRatio;
+          const height = canvas.clientHeight * pixelRatio | 0;
+          const width = canvas.clientWidth * pixelRatio | 0;
           const needResize = canvas.width !== width || canvas.height !== height;
           if(needResize){
             renderer.setSize(width, height, false);
